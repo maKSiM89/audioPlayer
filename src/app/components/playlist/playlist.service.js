@@ -102,9 +102,11 @@
 		}
 
 		function resetConfig() {
-			list[activeIndex]['config']['active'] = false;
-			list[activeIndex]['config']['paused'] = false;
-			list[activeIndex]['config']['volume'] = 1;
+			list.forEach(function (element) {
+				list[activeIndex]['config']['active'] = false;
+				list[activeIndex]['config']['paused'] = false;
+				list[activeIndex]['config']['volume'] = 1;
+			})
 		}
 
 		function getConfig( prop ) {

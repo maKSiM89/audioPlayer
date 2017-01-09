@@ -49,7 +49,7 @@
 			}
 
 			$scope.$watchCollection(function () {
-				return ctrl.file.config.active
+				return ctrl.file.config
 			}, handleWatchConfig);
 			
 		};
