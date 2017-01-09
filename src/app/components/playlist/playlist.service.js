@@ -56,8 +56,8 @@
 				setActive( index );
 			}
 
-			list[index]['config']['active'] = true;
-			list[index]['config']['paused'] = false;
+			list[activeIndex]['config']['active'] = true;
+			list[activeIndex]['config']['paused'] = false;
 		}
 
 		function pause() {

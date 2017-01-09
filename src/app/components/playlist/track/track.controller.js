@@ -47,10 +47,7 @@
 				playlistService.next();
 			}
 
-			$scope.$watchCollection(function () {
-				return ctrl.file.config
-			}, handleWatchConfig);
-			
+			$scope.$watch('ctrl.file.config', handleWatchConfig, true);
 		};
 
 		function play() {
