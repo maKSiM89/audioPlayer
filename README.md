@@ -19,6 +19,7 @@
 
 Note:
 - This player can't play two songs simultaneously but this can be done for a short time.
+- Also I did not add next and prev buttons for each track. If smbd need this I will add them asap
 - Desing is not professional :)
 
 Listen to the cool music!
