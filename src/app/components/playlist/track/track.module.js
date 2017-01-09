@@ -1,2 +1,2 @@
 angular
-    .module('playlist.track', []);
+	.module('playlist.track', []);

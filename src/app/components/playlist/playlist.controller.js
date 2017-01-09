@@ -21,7 +21,7 @@
 			decreaseVolume: decreaseVolume,
 			increaseVolume: increaseVolume
 		};
-		ctrl.onRemove = remove;
+		ctrl.remove = remove;
 
 		$scope.$watch(function () {
 			var activeIndex = playlistService.getActive();
@@ -65,7 +65,7 @@
 			if (newVolume > 1) {
 				newVolume = 1;
 			}
-			playlistService.setVolume( newVolume );
+			playlistService.setVolume( newVolume, true );
 		}
 		
 		function decreaseVolume() {
@@ -74,12 +74,11 @@
 			if (newVolume < 0) {
 				newVolume = 0;
 			}
-			playlistService.setVolume( newVolume );
+			playlistService.setVolume( newVolume, true );
 		}
 
 		function handleWatchConfig( newConfig ) {
 			if (newConfig) {
-				console.log( newConfig );
 				ctrl.isPlaying = newConfig['active'] && !newConfig['paused'];
 				ctrl.volume = newConfig['volume'];
 			}

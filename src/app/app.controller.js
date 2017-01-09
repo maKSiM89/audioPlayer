@@ -1,9 +1,9 @@
 ;(function() {
-    angular
-        .module('app')
-        .controller('AppController', AppController);
+	angular
+		.module('app')
+		.controller('AppController', AppController);
 
-    /* @ngInject*/
-    function AppController( $state ) {
-    }
+	/* @ngInject*/
+	function AppController() {
+	}
 })();

@@ -8,24 +8,32 @@
 	/* @ngInject */
 	function TrackController( $element, $scope, playlistService, utilsService ) {
 		var ctrl = this,
-			audioElement = angular.element( $element ).find( 'audio' )[0];
+			audioElement = angular.element( $element ).find( 'audio' )[0],
+			isManualTimeSetting = false,
+			tracksLength = playlistService.get().length;
 
-		ctrl.currentSpeed = 1;
-		ctrl.currentVolume = 1;
-		ctrl.currentTime = 0;
-		ctrl.currentTimeString = '0:00';
-		ctrl.currentVolumePercentage = 100;
-		ctrl.duration = 0;
-		ctrl.durationString = '0:00';
-		ctrl.isPlaying = false;
+		ctrl.settings = {
+			currentSpeed: 1,
+			currentVolume: 1,
+			currentTime: 0,
+			currentTimeString: '0:00',
+			currentVolumePercentage: 100,
+			duration: 0,
+			durationString: '0:00',
+			isPlaying: false
+		};
 
-		ctrl.play = play;
-		ctrl.pause = pause;
-		ctrl.stop = stop;
-		ctrl.setTime = setTime;
-		ctrl.setSpeed = setSpeed;
-		ctrl.setVolume = setVolume;
+		ctrl.controls = {
+			play: play,
+			pause: pause,
+			stop: stop,
+			setTime: setTime,
+			setSpeed: setSpeed,
+			setVolume: setVolume
+		};
 		ctrl.$onInit = onInit;
+		ctrl.handleMouseDown = handleMouseDown;
+		ctrl.remove = remove;
 
 		function play() {
 			playlistService.play( ctrl.index );
@@ -40,37 +48,25 @@
 		}
 
 		function setVolume() {
-			playlistService.setVolume( ctrl.currentVolume );
+			playlistService.setVolume( ctrl.settings.currentVolume );
 		}
 
 		function setSpeed() {
-			audioElement.playbackRate = ctrl.currentSpeed;
+			audioElement.playbackRate = ctrl.settings.currentSpeed;
 		}
 		
 		function setTime() {
-			audioElement.currentTime = ctrl.currentTime;
+			audioElement.currentTime = ctrl.settings.currentTime;
+			isManualTimeSetting = false;
+		}
+		
+		function handleMouseDown() {
+			isManualTimeSetting = true;
 		}
 
-		function handleWatchConfig(newConfig, oldConfig) {
-			if (newConfig.active) {
-				if (newConfig.paused) {
-					audioElement.pause();
-					ctrl.isPlaying = false;
-				} else {
-					audioElement.play();
-					ctrl.isPlaying = true;
-				}
-			} else {
-				audioElement.pause();
-				audioElement.currentTime = 0;
-				ctrl.isPlaying = false;
-			}
-
-			if (newConfig.volume !== oldConfig.volume) {
-				audioElement.volume = newConfig.volume;
-				ctrl.currentVolume = newConfig.volume;
-				ctrl.currentVolumePercentage = ctrl.currentVolume * 100;
-			}
+		function remove() {
+			stop();
+			ctrl.onRemove({index: ctrl.index});
 		}
 
 		function onInit() {
@@ -81,20 +77,49 @@
 			$scope.$watch('ctrl.file.config', handleWatchConfig, true);
 		}
 
+		function handleWatchConfig(newConfig, oldConfig) {
+			if (newConfig.active) {
+				if (newConfig.paused) {
+					audioElement.pause();
+					ctrl.settings.isPlaying = false;
+				} else {
+					audioElement.play();
+					ctrl.settings.isPlaying = true;
+				}
+			} else {
+				audioElement.pause();
+				audioElement.currentTime = 0;
+				ctrl.settings.isPlaying = false;
+			}
+
+			if (newConfig.volume !== oldConfig.volume) {
+				audioElement.volume = newConfig.volume;
+				ctrl.settings.currentVolume = newConfig.volume;
+				ctrl.settings.currentVolumePercentage = ctrl.settings.currentVolume * 100;
+			}
+		}
+
 		function handleTimeUpdate() {
-			ctrl.currentTime = parseInt( audioElement.currentTime );
-			ctrl.currentTimeString = utilsService.getTimeFormatFromSeconds( ctrl.currentTime );
-			$scope.$digest();
+			if (!isManualTimeSetting) {
+				ctrl.settings.currentTime = parseInt( audioElement.currentTime );
+				ctrl.settings.currentTimeString = utilsService.getTimeFormatFromSeconds( ctrl.settings.currentTime );
+				$scope.$digest();
+			}
 		}
 
 		function handleLoadedData() {
-			ctrl.duration = parseInt( audioElement.duration );
-			ctrl.durationString = utilsService.getTimeFormatFromSeconds( ctrl.duration );
+			ctrl.settings.duration = parseInt( audioElement.duration );
+			ctrl.settings.durationString = utilsService.getTimeFormatFromSeconds( ctrl.settings.duration );
 			$scope.$digest();
 		}
 
 		function handleOnEndedTrack() {
-			playlistService.next();
+			if (tracksLength === 1) {
+				audioElement.play();
+			} else {
+				playlistService.next();
+			}
+
 			$scope.$digest();
 		}
 	}

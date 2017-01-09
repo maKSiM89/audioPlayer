@@ -3,11 +3,14 @@
 }
 
 .container {
-  max-width: 500px;
   text-align: center;
 
   .header {
     padding-top: 20px;
+
+    img.logo {
+      width: 200px;
+    }
   }
 
   nav.menu {
@@ -34,6 +37,9 @@
   }
 
   md-content {
+    max-width: 500px;
+    margin: 0 auto;
+
     .playlist-controls {
       span {
           padding: 10px;
@@ -73,6 +79,7 @@
 
             span {
               font-size: 10px;
+              margin: 0 6px 0 12px;
             }
           }
 
@@ -109,6 +116,7 @@
   ul {
     li {
       list-style: none;
+      padding-bottom: 10px;
     }
   }
 

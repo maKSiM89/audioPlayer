@@ -6,15 +6,9 @@
 		.factory('playlistService', playlistService);
 
 	/* @ngInject */
-	function playlistService(utilsService, $q) {
+	function playlistService(utilsService) {
 		var list = [],
-			activeIndex = 0,
-			generalVolume = 1,
-			config = {
-				'active': false,
-				'paused': false,
-				'volume': 1
-			};
+			activeIndex = 0;
 
 		return {
 			get: get,
@@ -29,9 +23,7 @@
 			getVolume: getVolume,
 			setActive: setActive,
 			getActive: getActive,
-			resetConfig: resetConfig,
-			getConfig: getConfig,
-			setConfig: setConfig
+			resetConfig: resetConfig
 		};
 		
 		function get() {
@@ -55,7 +47,7 @@
 		}
 
 		function play( index ) {
-			resetConfig();
+			stop();
 			if (typeof index !== 'undefined') {
 				setActive( index );
 			}
@@ -70,7 +62,8 @@
 
 		function stop() {
 			list[activeIndex]['config']['active'] = false;
-			list[activeIndex]['config']['paused'] = true;
+			list[activeIndex]['config']['paused'] = false;
+			setActive(0);
 		}
 		
 		function next() {
@@ -93,9 +86,16 @@
 			play( prevIndex );
 		}
 
-		function setVolume( volume ) {
-			list[activeIndex]['config']['volume'] = volume;
-			generalVolume = volume;
+		function setVolume( volume, global ) {
+			var setGlobalVolume = global || false;
+
+			if (setGlobalVolume) {
+				list.forEach(function (element) {
+					element['config']['volume'] = volume;
+				});
+			} else {
+				list[activeIndex]['config']['volume'] = volume;
+			}
 		}
 
 		function getVolume() {
@@ -114,15 +114,8 @@
 			list.forEach(function (element) {
 				element['config']['active'] = false;
 				element['config']['paused'] = false;
+				element['config']['volume'] = 1;
 			})
-		}
-
-		function getConfig() {
-			return config;
-		}
-
-		function setConfig( conf ) {
-			angular.extend(config, conf);
 		}
 	}
 
