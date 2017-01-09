@@ -1,3 +1,4 @@
 .editorconfig
 .idea/*
 node_modules/*
+build

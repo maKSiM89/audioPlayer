@@ -3,10 +3,10 @@
 
 	angular
 		.module('utils')
-		.factory('utilsService', fileUtilsService);
+		.factory('utilsService', utilsService);
 
 	/* @ngInject */
-	function fileUtilsService() {
+	function utilsService() {
 		return {
 			getFileBlobURL: getFileBlobURL,
 			getTimeFormatFromSeconds: getTimeFormatFromSeconds

@@ -19,18 +19,21 @@
 	}
 
 	/* @ngInject */
-	function getAudioList( playlistService, $state ) {
-		return playlistService.get()
-			.then( function (list) {
-				if ( list.length === 0 ) {
-					$state.go( 'upload' );
-				}
+	function getAudioList( playlistService, $state, $timeout, $q ) {
+		var deferred = $q.defer(),
+			list = playlistService.get();
 
+		$timeout(function () {
+			if (list.length === 0) {
+				$state.go('upload');
+				deferred.reject( 'list is empty' );
+			} else {
 				playlistService.resetConfig();
-				return list;
-			})
-			.catch( function(error) {
-				console.log( error );
-			})
+				deferred.resolve( list );
+			}
+		}, 0);
+
+
+		return deferred.promise;
 	}
 })();

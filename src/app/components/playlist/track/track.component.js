@@ -8,7 +8,7 @@
 			controller: 'TrackController as ctrl',
 			bindings: {
 				file: '<',
-				remove: '&',
+				onRemove: '&',
 				index: '<'
 			}
 		});

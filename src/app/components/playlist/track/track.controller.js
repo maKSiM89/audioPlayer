@@ -25,30 +25,7 @@
 		ctrl.setTime = setTime;
 		ctrl.setSpeed = setSpeed;
 		ctrl.setVolume = setVolume;
-
-		ctrl.$onInit = function () {
-			audioElement.ontimeupdate = handleTimeUpdate;
-			audioElement.onloadeddata = handleLoadedData;
-			audioElement.onended = handleOnEndedTrack;
-
-			function handleTimeUpdate() {
-				ctrl.currentTime = parseInt( audioElement.currentTime );
-				ctrl.currentTimeString = utilsService.getTimeFormatFromSeconds( ctrl.currentTime );
-				$scope.$digest();
-			}
-
-			function handleLoadedData() {
-				ctrl.duration = parseInt( audioElement.duration );
-				ctrl.durationString = utilsService.getTimeFormatFromSeconds( ctrl.duration );
-				$scope.$digest();
-			}
-			
-			function handleOnEndedTrack() {
-				playlistService.next();
-			}
-
-			$scope.$watch('ctrl.file.config', handleWatchConfig, true);
-		};
+		ctrl.$onInit = onInit;
 
 		function play() {
 			playlistService.play( ctrl.index );
@@ -75,28 +52,50 @@
 		}
 
 		function handleWatchConfig(newConfig, oldConfig) {
-			console.log( newConfig, oldConfig );
-			if (!angular.equals( newConfig, oldConfig )) {
-				if (newConfig.active) {
-					if (newConfig.paused) {
-						audioElement.pause();
-						ctrl.isPlaying = false;
-					} else {
-						audioElement.play();
-						ctrl.isPlaying = true;
-					}
-				} else {
+			if (newConfig.active) {
+				if (newConfig.paused) {
 					audioElement.pause();
-					audioElement.currentTime = 0;
 					ctrl.isPlaying = false;
+				} else {
+					audioElement.play();
+					ctrl.isPlaying = true;
 				}
-
-				if (newConfig.volume !== oldConfig.volume) {
-					audioElement.volume = newConfig.volume;
-					ctrl.currentVolume = newConfig.volume;
-					ctrl.currentVolumePercentage = ctrl.currentVolume * 100;
-				}
+			} else {
+				audioElement.pause();
+				audioElement.currentTime = 0;
+				ctrl.isPlaying = false;
 			}
+
+			if (newConfig.volume !== oldConfig.volume) {
+				audioElement.volume = newConfig.volume;
+				ctrl.currentVolume = newConfig.volume;
+				ctrl.currentVolumePercentage = ctrl.currentVolume * 100;
+			}
+		}
+
+		function onInit() {
+			audioElement.ontimeupdate = handleTimeUpdate;
+			audioElement.onloadeddata = handleLoadedData;
+			audioElement.onended = handleOnEndedTrack;
+
+			$scope.$watch('ctrl.file.config', handleWatchConfig, true);
+		}
+
+		function handleTimeUpdate() {
+			ctrl.currentTime = parseInt( audioElement.currentTime );
+			ctrl.currentTimeString = utilsService.getTimeFormatFromSeconds( ctrl.currentTime );
+			$scope.$digest();
+		}
+
+		function handleLoadedData() {
+			ctrl.duration = parseInt( audioElement.duration );
+			ctrl.durationString = utilsService.getTimeFormatFromSeconds( ctrl.duration );
+			$scope.$digest();
+		}
+
+		function handleOnEndedTrack() {
+			playlistService.next();
+			$scope.$digest();
 		}
 	}
 

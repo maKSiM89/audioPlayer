@@ -7,24 +7,26 @@
 
 	/* @ngInject */
 	function PlaylistController(playlistService, audioList, $state, $scope) {
-		var ctrl = this,
-			activeAudioConfig = playlistService.getConfig();
+		var ctrl = this;
 
 		ctrl.list = audioList;
 		ctrl.isPlaying = false;
-		ctrl.volume = activeAudioConfig['volume'];
-		ctrl.remove = remove;
-		ctrl.play = play;
-		ctrl.pause = pause;
-		ctrl.stop = stop;
-		ctrl.next = next;
-		ctrl.prev = prev;
-		ctrl.decreaseVolume = decreaseVolume;
-		ctrl.increaseVolume = increaseVolume;
+		ctrl.volume = 1;
+		ctrl.controls = {
+			play: play,
+			pause: pause,
+			stop: stop,
+			next: next,
+			prev: prev,
+			decreaseVolume: decreaseVolume,
+			increaseVolume: increaseVolume
+		};
+		ctrl.onRemove = remove;
 
-		$scope.$watchCollection(function () {
-			return activeAudioConfig
-		}, handleWatchConfig);
+		$scope.$watch(function () {
+			var activeIndex = playlistService.getActive();
+			return ctrl.list[activeIndex]['config'];
+		}, handleWatchConfig, true);
 
 		function remove( index ) {
 			playlistService.remove( index );
@@ -75,8 +77,9 @@
 			playlistService.setVolume( newVolume );
 		}
 
-		function handleWatchConfig(newConfig, oldConfig) {
-			if (!angular.equals( newConfig, oldConfig )) {
+		function handleWatchConfig( newConfig ) {
+			if (newConfig) {
+				console.log( newConfig );
 				ctrl.isPlaying = newConfig['active'] && !newConfig['paused'];
 				ctrl.volume = newConfig['volume'];
 			}

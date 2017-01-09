@@ -8,7 +8,13 @@
 	/* @ngInject */
 	function playlistService(utilsService, $q) {
 		var list = [],
-			activeIndex = 0;
+			activeIndex = 0,
+			generalVolume = 1,
+			config = {
+				'active': false,
+				'paused': false,
+				'volume': 1
+			};
 
 		return {
 			get: get,
@@ -20,18 +26,16 @@
 			next: next,
 			prev: prev,
 			setVolume: setVolume,
+			getVolume: getVolume,
 			setActive: setActive,
 			getActive: getActive,
 			resetConfig: resetConfig,
-			getConfig: getConfig
+			getConfig: getConfig,
+			setConfig: setConfig
 		};
 		
 		function get() {
-			var deferred = $q.defer();
-
-			deferred.resolve( list );
-
-			return deferred.promise;
+			return list;
 		}
 
 		function add( file ) {
@@ -91,6 +95,11 @@
 
 		function setVolume( volume ) {
 			list[activeIndex]['config']['volume'] = volume;
+			generalVolume = volume;
+		}
+
+		function getVolume() {
+			return generalVolume;
 		}
 		
 		function setActive( index ) {
@@ -103,22 +112,17 @@
 
 		function resetConfig() {
 			list.forEach(function (element) {
-				list[activeIndex]['config']['active'] = false;
-				list[activeIndex]['config']['paused'] = false;
-				list[activeIndex]['config']['volume'] = 1;
+				element['config']['active'] = false;
+				element['config']['paused'] = false;
 			})
 		}
 
-		function getConfig( prop ) {
-			var result;
+		function getConfig() {
+			return config;
+		}
 
-			if (prop) {
-				result = list[activeIndex]['config']['prop'];
-			} else {
-				result = list[activeIndex]['config'];
-			}
-
-			return result;
+		function setConfig( conf ) {
+			angular.extend(config, conf);
 		}
 	}
 
