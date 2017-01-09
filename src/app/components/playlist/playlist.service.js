@@ -51,13 +51,13 @@
 		}
 
 		function play( index ) {
+			resetConfig();
 			if (typeof index !== 'undefined') {
 				setActive( index );
 			}
 
-			//resetConfig();
-			list[activeIndex]['config']['active'] = true;
-			list[activeIndex]['config']['paused'] = false;
+			list[index]['config']['active'] = true;
+			list[index]['config']['paused'] = false;
 		}
 
 		function pause() {
@@ -102,11 +102,9 @@
 		}
 
 		function resetConfig() {
-			list.forEach(function (element) {
-				element['config']['active'] = false;
-				element['config']['paused'] = false;
-				element['config']['volume'] = 1;
-			})
+			list[activeIndex]['config']['active'] = false;
+			list[activeIndex]['config']['paused'] = false;
+			list[activeIndex]['config']['volume'] = 1;
 		}
 
 		function getConfig( prop ) {

@@ -69,7 +69,7 @@
 		
 		function decreaseVolume() {
 			var newVolume = ctrl.volume - 0.1;
-console.log( newVolume );
+
 			if (newVolume < 0) {
 				newVolume = 0;
 			}
@@ -78,7 +78,6 @@ console.log( newVolume );
 
 		function handleWatchConfig(newConfig, oldConfig) {
 			if (!angular.equals( newConfig, oldConfig )) {
-				console.log( newConfig, oldConfig );
 				ctrl.isPlaying = newConfig['active'] && !newConfig['paused'];
 				ctrl.volume = newConfig['volume'];
 			}

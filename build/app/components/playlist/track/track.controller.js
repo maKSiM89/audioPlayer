@@ -49,7 +49,7 @@
 			}
 
 			$scope.$watchCollection(function () {
-				return ctrl.file.config
+				return ctrl.file.config.active
 			}, handleWatchConfig);
 			
 		};
@@ -79,24 +79,27 @@
 		}
 
 		function handleWatchConfig(newConfig, oldConfig) {
-			if (newConfig.active) {
-				if (newConfig.paused) {
-					audioElement.pause();
-					ctrl.isPlaying = false;
+			console.log( newConfig, oldConfig );
+			if (!angular.equals( newConfig, oldConfig )) {
+				if (newConfig.active) {
+					if (newConfig.paused) {
+						audioElement.pause();
+						ctrl.isPlaying = false;
+					} else {
+						audioElement.play();
+						ctrl.isPlaying = true;
+					}
 				} else {
-					audioElement.play();
-					ctrl.isPlaying = true;
+					audioElement.pause();
+					audioElement.currentTime = 0;
+					ctrl.isPlaying = false;
 				}
-			} else {
-				audioElement.pause();
-				audioElement.currentTime = 0;
-				ctrl.isPlaying = false;
-			}
 
-			if (newConfig.volume !== oldConfig.volume) {
-				audioElement.volume = newConfig.volume;
-				ctrl.currentVolume = newConfig.volume;
-				ctrl.currentVolumePercentage = ctrl.currentVolume * 100;
+				if (newConfig.volume !== oldConfig.volume) {
+					audioElement.volume = newConfig.volume;
+					ctrl.currentVolume = newConfig.volume;
+					ctrl.currentVolumePercentage = ctrl.currentVolume * 100;
+				}
 			}
 		}
 	}
