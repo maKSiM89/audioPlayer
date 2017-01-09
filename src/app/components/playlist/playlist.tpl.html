@@ -1,0 +1,29 @@
+<md-card md-whiteframe="5">
+    <md-card-title class="md-headline">
+        My playlist
+    </md-card-title>
+    <md-card-header class="playlist-controls">
+        <span><img ng-src="images/bigPlay.png" ng-click="ctrl.play()" alt="Play" ng-if="!ctrl.isPlaying"/></span>
+        <span><img ng-src="images/bigPause.png" ng-click="ctrl.pause()" alt="Pause" ng-if="ctrl.isPlaying"/></span>
+        <span><img ng-src="images/bigStop.png" ng-click="ctrl.stop()" alt="Stop"/></span>
+
+        <span><img ng-src="images/bigPrev.png" ng-click="ctrl.prev()" alt="Prev"/></span>
+        <span><img ng-src="images/bigNext.png" ng-click="ctrl.next()" alt="Next"/></span>
+
+        <span><img ng-src="images/bigMinus.png" ng-click="ctrl.decreaseVolume()" alt="Pause"/></span>
+        <span><img ng-src="images/bigPlus.png" ng-click="ctrl.increaseVolume()" alt="Stop"/></span>
+    </md-card-header>
+    <md-divider></md-divider>
+    <md-card-content class="playlist">
+        <md-list>
+            <md-list-item ng-repeat="item in ctrl.list">
+                <audio-track
+                    ng-class="{active: item.config.active}"
+                    file="item"
+                    remove="ctrl.remove(index)"
+                    index="$index"
+                ></audio-track>
+            </md-list-item>
+        </md-list>
+    </md-card-content>
+</md-card>

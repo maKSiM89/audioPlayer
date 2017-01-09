@@ -1,0 +1,45 @@
+<form name="uploadFileForm">
+    <md-card md-whiteframe="5">
+        <md-card-title class="md-headline">
+            Upload the new audio file
+        </md-card-title>
+        <md-divider></md-divider>
+        <md-card-content>
+            <md-button
+                class="md-raised md-warn"
+                ng-model="ctrl.audioFiles"
+                name="files"
+                ngf-accept="'audio/*'"
+                ngf-max-size="5MB"
+                required
+                ngf-select
+                ngf-multiple="true"
+            >
+                Choose files
+            </md-button>
+
+            <div class="warn">
+                <ul>
+                    <li ng-repeat="file in ctrl.audioFiles">{{ file.name }}</li>
+                </ul>
+            </div>
+
+            <div class="error" ng-if="uploadFileForm.files.$error && !uploadFileForm.$pristine">
+                <span ng-show="uploadFileForm.files.$error.maxSize">
+                    One of the selected files is too large. Maximum size is 5MB.
+                </span>
+                <span ng-show="uploadFileForm.files.$error.required">
+                    Selecting files is required
+                </span>
+            </div>
+        </md-card-content>
+        <md-card-actions>
+            <md-button class="md-primary md-raised" ng-click="ctrl.addToPlayList()" ng-disabled="!uploadFileForm.$valid">
+                Add to Playlist
+            </md-button>
+            <div ng-if="ctrl.uploadCompleted" class="warn">
+                Files were added to your <a ui-sref="playlist()">playlist!</a>
+            </div>
+        </md-card-actions>
+    </md-card>
+</form>

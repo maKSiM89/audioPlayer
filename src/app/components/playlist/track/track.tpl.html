@@ -1,0 +1,70 @@
+<audio buffered>
+    <source ng-src="{{ ctrl.file.url }}" type="audio/ogg">
+    <source ng-src="{{ ctrl.file.url }}" type="audio/mpeg">
+    Your browser does not support the audio tag.
+</audio>
+
+<md-slider-container class="trackTime">
+    <div class="controls">
+        <span>
+            <img ng-src="images/play.png" ng-click="ctrl.play()" alt="Play" ng-if="!ctrl.isPlaying"/>
+        </span>
+        <span>
+            <img ng-src="images/pause.png" ng-click="ctrl.pause()" alt="Pause" ng-if="ctrl.isPlaying"/>
+        </span>
+        <span>
+            <img ng-src="images/stop.png" ng-click="ctrl.stop()" alt="Stop" />
+        </span>
+        <span class="currentTime">
+            {{ ctrl.currentTimeString }} / {{ ctrl.durationString }}
+        </span>
+    </div>
+    <md-slider flex
+        ng-model="ctrl.currentTime"
+        min="0"
+        max="{{ ctrl.duration }}"
+        aria-label="time"
+        ng-value="0"
+        ng-mouseup="ctrl.setTime()"
+    >
+    </md-slider>
+    <div class="controls">
+        <span>
+            <img ng-src="images/remove.png" ng-click="ctrl.remove({index: ctrl.index})" alt="Remove audio"/>
+        </span>
+    </div>
+</md-slider-container>
+
+<md-slider-container class="short layout-align-start" >
+    <span>Speed</span>
+    <md-slider flex
+        ng-model="ctrl.currentSpeed"
+        min="0.5"
+        max="1.5"
+        step="0.01"
+        aria-label="speed"
+        class="md-accent"
+        defaultValue="0"
+        ng-mouseup="ctrl.setSpeed()"
+    >
+    </md-slider>
+    <span>x{{ ctrl.currentSpeed | number: 1 }}</span>
+</md-slider-container>
+
+<md-slider-container class="short">
+    <span>Volume</span>
+    <md-slider flex
+        ng-model="ctrl.currentVolume"
+        min="0"
+        max="1"
+        step="0.01"
+        aria-label="speed"
+        class="md-accent"
+        defaultValue="0"
+        ng-mouseup="ctrl.setVolume()"
+    >
+    </md-slider>
+    <span>{{ ctrl.currentVolumePercentage | number: 0 }}%</span>
+</md-slider-container>
+
+<md-divider></md-divider>
