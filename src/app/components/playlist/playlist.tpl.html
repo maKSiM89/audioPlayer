@@ -2,16 +2,28 @@
 	<md-card-title class="md-headline layout-align-center">
 		My playlist
 	</md-card-title>
-	<md-card-header class="playlist-controls">
-		<span ng-if="!ctrl.isPlaying"><img ng-src="images/bigPlay.png" ng-click="ctrl.controls.play()" alt="Play" /></span>
-		<span ng-if="ctrl.isPlaying"><img ng-src="images/bigPause.png" ng-click="ctrl.controls.pause()" alt="Pause" /></span>
-		<span><img ng-src="images/bigStop.png" ng-click="ctrl.controls.stop()" alt="Stop"/></span>
-
-		<span><img ng-src="images/bigPrev.png" ng-click="ctrl.controls.prev()" alt="Prev"/></span>
-		<span><img ng-src="images/bigNext.png" ng-click="ctrl.controls.next()" alt="Next"/></span>
-
-		<span><img ng-src="images/bigMinus.png" ng-click="ctrl.controls.decreaseVolume()" alt="Pause"/></span>
-		<span><img ng-src="images/bigPlus.png" ng-click="ctrl.controls.increaseVolume()" alt="Stop"/></span>
+	<md-card-header class="playlist-controls layout-align-center">
+		<i ng-if="!ctrl.isPlaying" ng-click="ctrl.controls.play()" class="material-icons">
+			play_circle_outline
+		</i>
+		<i ng-if="ctrl.isPlaying" ng-click="ctrl.controls.pause()" class="material-icons">
+			pause_circle_outline
+		</i>
+		<i ng-click="ctrl.controls.stop()" class="material-icons">
+			stop
+		</i>
+		<i ng-click="ctrl.controls.prev()" class="material-icons">
+			skip_previous
+		</i>
+		<i ng-click="ctrl.controls.next()" class="material-icons">
+			skip_next
+		</i>
+		<i ng-click="ctrl.controls.decreaseVolume()" class="material-icons">
+			volume_down
+		</i>
+		<i ng-click="ctrl.controls.increaseVolume()" class="material-icons">
+			volume_up
+		</i>
 	</md-card-header>
 	<md-divider></md-divider>
 	<md-card-content class="playlist">

@@ -41,16 +41,14 @@
     margin: 0 auto;
 
     .playlist-controls {
-      span {
-          padding: 10px;
-
-          img {
-            width: 50px;
-            height: 50px;
-            cursor: pointer;
-            outline: none;
-          }
+      i {
+        &.material-icons {
+          font-size: 60px;
+          cursor: pointer;
+          outline: none;
+          padding: 5px;
         }
+      }
     }
 
     .playlist {
@@ -86,21 +84,15 @@
           .controls {
             max-width: 100%;
 
-            span {
-              display: inline;
-              float: left;
-              padding: 1px;
-
-              img {
-                width: 25px;
-                height: 25px;
+            i {
+              &.material-icons {
+                font-size: 20px;
                 cursor: pointer;
                 outline: none;
               }
 
               &.currentTime {
                 font-size: 12px;
-                padding: 3px 0 0 6px;
               }
             }
           }

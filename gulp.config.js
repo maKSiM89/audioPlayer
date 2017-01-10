@@ -12,7 +12,6 @@ module.exports = function () {
             templates: 'src/app/**/*.tpl.html',
 			vendorScripts: [
 				'node_modules/angular/angular.js',
-				'node_modules/angular-cookies/angular-cookies.js',
 				'node_modules/angular-ui-router/release/angular-ui-router.js',
 				'node_modules/ng-file-upload/dist/ng-file-upload-shim.js',
 				'node_modules/ng-file-upload/dist/ng-file-upload.js',

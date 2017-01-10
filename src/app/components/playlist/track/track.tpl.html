@@ -6,18 +6,24 @@
 
 <md-slider-container class="trackTime">
 	<div class="controls">
-		<span>
-			<img ng-src="images/play.png" ng-click="ctrl.controls.play()" alt="Play" ng-if="!ctrl.settings.isPlaying"/>
-		</span>
-		<span>
-			<img ng-src="images/pause.png" ng-click="ctrl.controls.pause()" alt="Pause" ng-if="ctrl.settings.isPlaying"/>
-		</span>
-		<span>
-			<img ng-src="images/stop.png" ng-click="ctrl.controls.stop()" alt="Stop" />
-		</span>
-		<span class="currentTime">
+		<i ng-if="!ctrl.settings.isPlaying" ng-click="ctrl.controls.play()" class="material-icons">
+			play_circle_outline
+		</i>
+		<i ng-if="ctrl.settings.isPlaying" ng-click="ctrl.controls.pause()" class="material-icons">
+			pause_circle_outline
+		</i>
+		<i ng-click="ctrl.controls.stop()" class="material-icons">
+			stop
+		</i>
+		<i ng-click="ctrl.controls.prev()" class="material-icons">
+			skip_previous
+		</i>
+		<i ng-click="ctrl.controls.next()" class="material-icons">
+			skip_next
+		</i>
+		<i class="currentTime">
 			{{ ctrl.settings.currentTimeString }} / {{ ctrl.settings.durationString }}
-		</span>
+		</i>
 	</div>
 	<md-slider flex
 		ng-model="ctrl.settings.currentTime"
@@ -29,9 +35,7 @@
 	>
 	</md-slider>
 	<div class="controls">
-		<span>
-			<img ng-src="images/remove.png" ng-click="ctrl.remove()" alt="Remove audio"/>
-		</span>
+		<i class="material-icons" ng-click="ctrl.remove()">close</i>
 	</div>
 </md-slider-container>
 

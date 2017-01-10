@@ -3,8 +3,6 @@ angular
 		'templates',
 		'ui.router',
 		'ngMaterial',
-		'ngAnimate',
-		'ngAria',
 
 		'app.upload',
 		'app.playlist',
